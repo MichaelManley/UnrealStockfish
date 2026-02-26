@@ -291,16 +291,16 @@ class TBFile: public std::ifstream {
 #endif
         uint8_t* data = (uint8_t*) *baseAddress;
 
-        constexpr uint8_t Magics[][4] = {{0xD7, 0x66, 0x0C, 0xA5}, {0x71, 0xE8, 0x23, 0x5D}};
+        constexpr uint8_t ProbeMagics[][4] = {{0xD7, 0x66, 0x0C, 0xA5}, {0x71, 0xE8, 0x23, 0x5D}};
 
-        if (memcmp(data, Magics[type == WDL], 4))
+        if (memcmp(data, ProbeMagics[type == WDL], 4))
         {
             std::cerr << "Corrupted table in file " << fname << std::endl;
             unmap(*baseAddress, *mapping);
             return *baseAddress = nullptr, nullptr;
         }
 
-        return data + 4;  // Skip Magics's header
+        return data + 4;  // Skip ProbeMagics's header
     }
 
     static void unmap(void* baseAddress, uint64_t mapping) {

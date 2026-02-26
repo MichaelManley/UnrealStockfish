@@ -37,7 +37,7 @@
 
 namespace Stockfish::Eval::NNUE::Layers {
 
-#if (USE_SSSE3 | (USE_NEON >= 8))
+#if (defined(USE_SSSE3) | (defined(USE_NEON) && USE_NEON >= 8))
 static constexpr int lsb_index64[64] = {
   0,  47, 1,  56, 48, 27, 2,  60, 57, 49, 41, 37, 28, 16, 3,  61, 54, 58, 35, 52, 50, 42,
   21, 44, 38, 32, 29, 23, 17, 11, 4,  62, 46, 55, 26, 59, 40, 36, 15, 53, 34, 51, 20, 43,
@@ -193,7 +193,7 @@ class AffineTransformSparseInput {
     static constexpr IndexType PaddedOutputDimensions =
       ceil_to_multiple<IndexType>(OutputDimensions, MaxSimdWidth);
 
-#if (USE_SSSE3 | (USE_NEON >= 8))
+#if (defined(USE_SSSE3) | (defined(USE_NEON) && USE_NEON >= 8))
     static constexpr IndexType ChunkSize = 4;
 #else
     static constexpr IndexType ChunkSize = 1;
@@ -216,7 +216,7 @@ class AffineTransformSparseInput {
     }
 
     static constexpr IndexType get_weight_index(IndexType i) {
-#if (USE_SSSE3 | (USE_NEON >= 8))
+#if (defined(USE_SSSE3) | (defined(USE_NEON) && USE_NEON >= 8))
         return get_weight_index_scrambled(i);
 #else
         return i;
@@ -253,7 +253,7 @@ class AffineTransformSparseInput {
     // Forward propagation
     void propagate(const InputType* input, OutputType* output) const {
 
-#if (USE_SSSE3 | (USE_NEON >= 8))
+#if (defined(USE_SSSE3) | (defined(USE_NEON) && USE_NEON >= 8))
     #if defined(USE_AVX512)
         using invec_t  = __m512i;
         using outvec_t = __m512i;

@@ -37,6 +37,18 @@
 #include <type_traits>
 #include <vector>
 
+#ifdef _MSC_VER
+#pragma warning(disable:4191)
+#endif 
+
+#ifdef verify
+#undef verify
+#endif
+
+#ifdef RESTRICT
+#undef RESTRICT
+#endif
+
 #if !defined(NO_PREFETCH) && (defined(_MSC_VER) || defined(__INTEL_COMPILER))
     #include <immintrin.h>
 #endif
