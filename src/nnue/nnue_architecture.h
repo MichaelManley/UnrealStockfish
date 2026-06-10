@@ -112,7 +112,7 @@ struct NetworkArchitecture {
             Buffer() { std::memset(this, 0, sizeof(*this)); }
         };
 
-#if defined(__clang__) && (__APPLE__)
+#if defined(__clang__) && defined(__APPLE__)
         // workaround for a bug reported with xcode 12
         static thread_local auto tlsBuffer = std::make_unique<Buffer>();
         // Access TLS only once, cache result.
